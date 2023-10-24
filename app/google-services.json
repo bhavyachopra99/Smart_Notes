@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "434856229078",
+    "project_id": "smartnotes-7ea64",
+    "storage_bucket": "smartnotes-7ea64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434856229078:android:c301ff443bbb8fde8cb177",
+        "android_client_info": {
+          "package_name": "com.bhavya.SmartnotesApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi5z9wU5QvPog7Crm_UOPRKWveu4LWPPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434856229078:android:d8642bc049447e1c8cb177",
+        "android_client_info": {
+          "package_name": "com.bhavya.smartnotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi5z9wU5QvPog7Crm_UOPRKWveu4LWPPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434856229078:android:49186f1c5d2476578cb177",
+        "android_client_info": {
+          "package_name": "easy.tuto.notespro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi5z9wU5QvPog7Crm_UOPRKWveu4LWPPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
