@@ -85,6 +85,20 @@
         android:layout_marginTop="12dp"
         android:textColor="@android:color/holo_red_dark" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/OCR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
+        android:text="OCR"
+        android:onClick="OCR"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="16sp"
+        android:layout_below="@id/delete_note_text_view_btn"
+        android:layout_centerHorizontal="true"
+        />
+
 
 
 

@@ -20,7 +20,7 @@ import com.bhavya.smartnotes.R;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
-    EditText emailEditText,passwordEditText,confirmPasswordEditText;
+    EditText emailEditText, passwordEditText, confirmPasswordEditText;
     Button createAccountBtn;
     ProgressBar progressBar;
     TextView loginBtnTextView;
@@ -37,80 +37,89 @@ public class CreateAccountActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         loginBtnTextView = findViewById(R.id.login_text_view_btn);
 
-        createAccountBtn.setOnClickListener(v-> createAccount());
-        loginBtnTextView.setOnClickListener(v-> finish());
-
-
+        createAccountBtn.setOnClickListener(v -> createAccount());
+        loginBtnTextView.setOnClickListener(v -> finish());
     }
 
-    void createAccount(){
-        String email  = emailEditText.getText().toString();
-        String password  = passwordEditText.getText().toString();
-        String confirmPassword  = confirmPasswordEditText.getText().toString();
+    void createAccount() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String confirmPassword = confirmPasswordEditText.getText().toString();
 
-        boolean isValidated = validateData(email,password,confirmPassword);
-        if(!isValidated){
+        boolean isValidated = validateData(email, password, confirmPassword);
+        if (!isValidated) {
             return;
         }
 
-        createAccountInFirebase(email,password);
-
-
+        createAccountInFirebase(email, password);
     }
 
-    void createAccountInFirebase(String email,String password){
+    void createAccountInFirebase(String email, String password) {
         changeInProgress(true);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CreateAccountActivity.this,
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(CreateAccountActivity.this,
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         changeInProgress(false);
-                        if(task.isSuccessful()){
-                            //creating acc is done
-                            Utility.showToast(CreateAccountActivity.this,"Successfully create account,Check email to verify");
+                        if (task.isSuccessful()) {
+                            // Creating the account is done
+                            Utility.showToast(CreateAccountActivity.this, "Successfully created account, Check email to verify");
                             firebaseAuth.getCurrentUser().sendEmailVerification();
                             firebaseAuth.signOut();
                             finish();
-                        }else{
-                            //failure
-                            Utility.showToast(CreateAccountActivity.this,task.getException().getLocalizedMessage());
+                        } else {
+                            // Failure
+                            Utility.showToast(CreateAccountActivity.this, task.getException().getLocalizedMessage());
                         }
                     }
                 }
         );
-
-
-
     }
 
-    void changeInProgress(boolean inProgress){
-        if(inProgress){
+    void changeInProgress(boolean inProgress) {
+        if (inProgress) {
             progressBar.setVisibility(View.VISIBLE);
             createAccountBtn.setVisibility(View.GONE);
-        }else{
+        } else {
             progressBar.setVisibility(View.GONE);
             createAccountBtn.setVisibility(View.VISIBLE);
         }
     }
 
-    boolean validateData(String email,String password,String confirmPassword){
-        //validate the data that are input by user.
+    boolean validateData(String email, String password, String confirmPassword) {
+        // Validate the data that are input by the user.
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError("Email is invalid");
             return false;
         }
-        if(password.length()<6){
-            passwordEditText.setError("Password length is invalid");
+
+        if (password.length() < 6) {
+            passwordEditText.setError("Password is too short (min 6 characters)");
             return false;
         }
-        if(!password.equals(confirmPassword)){
-            confirmPasswordEditText.setError("Password not matched");
+
+        // Check for a strong password (at least one uppercase letter, one lowercase letter, and one digit).
+        if (!password.matches(".*[A-Z].*")) {
+            passwordEditText.setError("Password must contain at least one uppercase letter");
             return false;
         }
+        if (!password.matches(".*[a-z].*")) {
+            passwordEditText.setError("Password must contain at least one lowercase letter");
+            return false;
+        }
+        if (!password.matches(".*\\d.*")) {
+            passwordEditText.setError("Password must contain at least one digit");
+            return false;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            confirmPasswordEditText.setError("Password does not match");
+            return false;
+        }
+
         return true;
     }
-
 }

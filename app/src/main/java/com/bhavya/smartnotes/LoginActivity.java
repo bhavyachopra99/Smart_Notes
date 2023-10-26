@@ -17,11 +17,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import com.bhavya.smartnotes.R;
-
 public class LoginActivity extends AppCompatActivity {
 
-    EditText emailEditText,passwordEditText;
+    EditText emailEditText, passwordEditText;
     Button loginBtn;
     ProgressBar progressBar;
     TextView createAccountBtnTextView;
@@ -37,72 +35,70 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         createAccountBtnTextView = findViewById(R.id.create_account_text_view_btn);
 
-        loginBtn.setOnClickListener((v)-> loginUser() );
-        createAccountBtnTextView.setOnClickListener((v)->startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class)) );
-
+        loginBtn.setOnClickListener((v) -> loginUser());
+        createAccountBtnTextView.setOnClickListener((v) -> startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class)));
     }
 
-    void loginUser(){
-        String email  = emailEditText.getText().toString();
-        String password  = passwordEditText.getText().toString();
+    void loginUser() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
 
-
-        boolean isValidated = validateData(email,password);
-        if(!isValidated){
+        boolean isValidated = validateData(email, password);
+        if (!isValidated) {
             return;
         }
 
-        loginAccountInFirebase(email,password);
-
+        loginAccountInFirebase(email, password);
     }
 
-    void loginAccountInFirebase(String email,String password){
+    void loginAccountInFirebase(String email, String password) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         changeInProgress(true);
-        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 changeInProgress(false);
-                if(task.isSuccessful()){
-                    //login is success
-                    if(firebaseAuth.getCurrentUser().isEmailVerified()){
-                        //go to mainactivity
+                if (task.isSuccessful()) {
+                    // Login is successful
+                    if (firebaseAuth.getCurrentUser().isEmailVerified()) {
+                        // Go to MainActivity
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();
-                    }else{
-                        Utility.showToast(LoginActivity.this,"Email not verified, Please verify your email.");
+                    } else {
+                        Utility.showToast(LoginActivity.this, "Email not verified, Please verify your email.");
                     }
-
-                }else{
-                    //login failed
-                    Utility.showToast(LoginActivity.this,task.getException().getLocalizedMessage());
+                } else {
+                    // Login failed
+                    String error = task.getException().getLocalizedMessage();
+                    if (error.contains("INVALID_LOGIN")) {
+                        // Password does not match the database
+                        passwordEditText.setError("Wrong password");
+                    } else {
+                        Utility.showToast(LoginActivity.this, error);
+                    }
                 }
             }
         });
     }
 
-    void changeInProgress(boolean inProgress){
-        if(inProgress){
+    void changeInProgress(boolean inProgress) {
+        if (inProgress) {
             progressBar.setVisibility(View.VISIBLE);
             loginBtn.setVisibility(View.GONE);
-        }else{
+        } else {
             progressBar.setVisibility(View.GONE);
             loginBtn.setVisibility(View.VISIBLE);
         }
     }
 
-    boolean validateData(String email,String password){
-        //validate the data that are input by user.
+    boolean validateData(String email, String password) {
+        // Validate the data that are input by the user.
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError("Email is invalid");
             return false;
         }
-        if(password.length()<6){
-            passwordEditText.setError("Password length is invalid");
-            return false;
-        }
+
         return true;
     }
-
 }
