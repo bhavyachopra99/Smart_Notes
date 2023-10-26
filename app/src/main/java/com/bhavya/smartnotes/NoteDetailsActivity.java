@@ -143,8 +143,6 @@ public class NoteDetailsActivity extends AppCompatActivity {
     public void OCR(View view) {
         Intent i = new Intent(this, OCR.class);
         startActivity(i);
-//        checkPermissions();
-//        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(this);
     }
 //
 //    @Override

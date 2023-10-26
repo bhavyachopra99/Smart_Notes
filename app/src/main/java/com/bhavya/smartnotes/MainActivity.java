@@ -3,6 +3,7 @@ package com.bhavya.smartnotes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 
@@ -82,5 +83,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         noteAdapter.notifyDataSetChanged();
+    }
+
+    public void OCR(View view) {
+        Intent i = new Intent(this, OCR.class);
+        startActivity(i);
     }
 }

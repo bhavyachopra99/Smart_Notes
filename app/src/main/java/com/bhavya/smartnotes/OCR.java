@@ -100,6 +100,7 @@ public class OCR extends AppCompatActivity {
                 stringBuilder.append(textBlock.getValue());
                 stringBuilder.append("\n");
             }
+            Toast.makeText(this, stringBuilder.toString(), Toast.LENGTH_SHORT).show();
 
             binding.dataTv.setText(stringBuilder.toString());
             binding.captureBtn.setText("Retake");
@@ -114,5 +115,10 @@ public class OCR extends AppCompatActivity {
 
 //        let user know data save on clipBoard Successfully.
         Toast.makeText(this, "Copied to clipBoard", Toast.LENGTH_SHORT).show();
+    }
+
+    public void back(View view) {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 }
